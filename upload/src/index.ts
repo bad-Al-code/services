@@ -16,7 +16,7 @@ const startServer = async () => {
             await dbInstance.insertDummyData();
         }
 
-        const server = http.createServer(createApp);
+        const server = http.createServer(createApp());
 
         server.listen(port, () => {
             console.log(`Server is running on port ${port}`);
