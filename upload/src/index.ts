@@ -1,3 +1,9 @@
 import { envVariables } from './config/env';
+import { db, dbInstance } from './db';
 
-console.log('DATABASE_URL: ', envVariables.DATABASE_URL);
+const main = async () => {
+    await dbInstance.start();
+    console.log('DB started');
+};
+
+main();
