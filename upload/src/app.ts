@@ -3,9 +3,8 @@ import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import morgan from 'morgan';
 
-import { db } from './db';
-import { videos } from './db/schema';
 import { envVariables } from './config/env';
+import { videoRouter } from './routes/video.route';
 
 export const createApp = () => {
     const app: Express = express();
@@ -13,7 +12,7 @@ export const createApp = () => {
     app.use(helmet());
 
     app.use(express.json());
-    app.use(morgan('combined'));
+    app.use(morgan('dev'));
 
     const limiter = rateLimit({
         windowMs: parseInt(envVariables.RATE_LIMIT_MAX) * 60 * 1000,
@@ -24,19 +23,7 @@ export const createApp = () => {
 
     app.use(limiter);
 
-    app.get('/', async (req: Request, res: Response, next: NextFunction) => {
-        try {
-            const allVideos = await db.select().from(videos);
-            res.json(allVideos);
-        } catch (error) {
-            next(error);
-        }
-    });
-
-    app.use((err: any, req: Request, res: Response, next: NextFunction) => {
-        console.error(err.stack);
-        res.status(500).send('Something went wrong!');
-    });
+    app.use(videoRouter);
 
     return app;
 };
