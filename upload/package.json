@@ -15,6 +15,7 @@
     "description": "",
     "devDependencies": {
         "@types/express": "^5.0.0",
+        "@types/morgan": "^1.9.9",
         "@types/node": "^22.13.10",
         "drizzle-kit": "^0.30.5",
         "nodemon": "^3.1.9",
@@ -26,6 +27,9 @@
         "aws-sdk": "^2.1692.0",
         "dotenv": "^16.4.7",
         "drizzle-orm": "^0.40.0",
+        "express-rate-limit": "^7.5.0",
+        "helmet": "^8.0.0",
+        "morgan": "^1.10.0",
         "mysql2": "^3.13.0",
         "zod": "^3.24.2"
     }

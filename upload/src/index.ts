@@ -1,6 +1,6 @@
 import http from 'node:http';
 
-import { app } from './app';
+import { createApp } from './app';
 import { envVariables } from './config/env';
 import { dbInstance } from './db';
 
@@ -16,7 +16,7 @@ const startServer = async () => {
             await dbInstance.insertDummyData();
         }
 
-        const server = http.createServer(app);
+        const server = http.createServer(createApp);
 
         server.listen(port, () => {
             console.log(`Server is running on port ${port}`);

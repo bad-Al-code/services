@@ -5,6 +5,7 @@ const envSchema = z.object({
     DATABASE_URL: z.string().url(),
     PORT: z.string().default('3000'),
     NODE_ENV: z.string().default('dev'),
+    RATE_LIMIT_MAX: z.string().default('100'),
 });
 
 const env = envSchema.safeParse(process.env);
