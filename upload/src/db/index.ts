@@ -1,3 +1,4 @@
+import { randomUUID } from 'node:crypto';
 import mysql, { Pool } from 'mysql2/promise';
 import { drizzle } from 'drizzle-orm/mysql2';
 
@@ -35,6 +36,7 @@ export class Database {
     async insertDummyData(): Promise<void> {
         try {
             await this.db.insert(schema.videos).values({
+                id: randomUUID(),
                 userId: '1',
                 filename: 'test_video_1.mp4',
                 s3Url: 's3://upload_video_test_bucket_name/test_video_1.mp4',
@@ -42,6 +44,7 @@ export class Database {
             });
 
             await this.db.insert(schema.videos).values({
+                id: randomUUID(),
                 userId: '2',
                 filename: 'test_video_2.mp4',
                 s3Url: 's3://upload_video_test_bucket_name/test_video_2.mp4',
