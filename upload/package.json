@@ -4,7 +4,10 @@
     "main": "index.js",
     "scripts": {
         "format": "prettier . --write",
-        "build": "tsc"
+        "build": "tsc",
+        "db:generate": "drizzle-kit generate",
+        "db:migrate": "drizzle-kit migrate",
+        "db:push": "drizzle-kit push"
     },
     "keywords": [],
     "author": "",

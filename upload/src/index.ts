@@ -11,6 +11,8 @@ const startServer = async () => {
         await dbInstance.start();
         console.log('Database Started');
 
+        await dbInstance.insertDummyData();
+
         const server = http.createServer(app);
 
         server.listen(port, () => {
