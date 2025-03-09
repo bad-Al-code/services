@@ -5,13 +5,16 @@ import { envVariables } from './config/env';
 import { dbInstance } from './db';
 
 const port = envVariables.PORT;
+const NODE_ENV = envVariables.NODE_ENV;
 
 const startServer = async () => {
     try {
         await dbInstance.start();
         console.log('Database Started');
 
-        await dbInstance.insertDummyData();
+        if (NODE_ENV === 'dev') {
+            await dbInstance.insertDummyData();
+        }
 
         const server = http.createServer(app);
 
