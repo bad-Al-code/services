@@ -3,6 +3,6 @@ import { getSingleVideoController } from '../controllers/getSingleVideo.controll
 
 const router = Router();
 
-router.get('/users/:userId/videos/:videoId', getSingleVideoController);
+router.get('/api/users/:userId/videos/:videoId', getSingleVideoController);
 
 export { router as getSingleVideoRouter };
