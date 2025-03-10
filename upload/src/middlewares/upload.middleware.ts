@@ -1,13 +1,15 @@
 import path from 'node:path';
 import { randomUUID } from 'node:crypto';
 
-import multer, { MulterError } from 'multer';
+import multer from 'multer';
 import multers3 from 'multer-s3';
 import { NextFunction, Request, Response } from 'express';
 import httpStatus from 'http-status-codes';
 
 import { s3Client } from '../config/aws';
 import { envVariables } from '../config/env';
+import { videos } from '../db/schema';
+import { db } from '../db';
 
 const storage = multers3({
     s3: s3Client,
@@ -48,13 +50,37 @@ const upload = multer({
     limits,
 });
 
-export const uploadVideoMiddleware = (
+export const uploadVideoMiddleware = async (
     req: Request,
     res: Response,
     next: NextFunction,
 ) => {
     console.log('upload started');
-    upload.single('video')(req, res, (err) => {
+
+    const videoId = randomUUID();
+    const userId = req.params.userId;
+    const filename = (req.file?.originalname as string) || 'unknown';
+
+    try {
+        await db.insert(videos).values({
+            id: videoId,
+            userId: userId,
+            filename: filename,
+            s3Url: '',
+            status: 'pending',
+        });
+
+        (req as any).videoId = videoId;
+    } catch (dbError) {
+        console.error('Database insertion error:', dbError);
+        res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
+            error: 'Database Error',
+        });
+
+        return;
+    }
+
+    upload.single('video')(req, res, async (err) => {
         if (err instanceof multer.MulterError) {
             console.error('uploadVideoMiddleware error:', err);
 
@@ -81,7 +107,7 @@ export const uploadVideoMiddleware = (
             });
         }
 
-        (req as any).s3Url = (req.file as any).location;
+        (req as any).s3Url = (req.file as Express.MulterS3.File).location;
         console.log('uploadVideoMiddleware finished');
 
         next();

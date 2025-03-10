@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import httpSatus from 'http-status-codes';
-import { randomUUID } from 'node:crypto';
 import { z } from 'zod';
+import { eq } from 'drizzle-orm';
 
 import { videos } from '../db/schema';
 import { db } from '../db';
@@ -14,16 +14,12 @@ export const uploadVideoController = async (req: Request, res: Response) => {
         userIdSchema.parse(userId);
 
         const s3Url = (req as any).s3Url;
-        const filename = (req as any).file.originalname;
+        const videoId = (req as any).videoId;
 
-        const videoId = randomUUID();
-
-        await db.insert(videos).values({
-            id: videoId,
-            userId,
-            filename,
-            s3Url,
-        });
+        await db
+            .update(videos)
+            .set({ s3Url, status: 'completed' })
+            .where(eq(videos.id, videoId));
 
         res.status(httpSatus.CREATED).json({
             message: 'Video uploaded successfully',
