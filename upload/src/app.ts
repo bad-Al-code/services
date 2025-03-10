@@ -6,6 +6,7 @@ import morgan from 'morgan';
 import { envVariables } from './config/env';
 import { videoRouter } from './routes/video.route';
 import { getAllVideoRouter } from './routes/getAllVideo.route';
+import { getSingleVideoRouter } from './routes/getSingleVideo.route';
 
 export const createApp = () => {
     const app: Express = express();
@@ -26,6 +27,7 @@ export const createApp = () => {
 
     app.use(videoRouter);
     app.use(getAllVideoRouter);
+    app.use(getSingleVideoRouter);
 
     return app;
 };
