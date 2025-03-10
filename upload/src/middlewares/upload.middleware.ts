@@ -20,8 +20,7 @@ const storage = multers3({
     },
     key: function (req, file, cb) {
         const uniqueSuffix = randomUUID();
-        const fileExtension = path.extname(file.originalname);
-        cb(null, `videos/${uniqueSuffix}${fileExtension}`);
+        cb(null, `videos/${uniqueSuffix}-${file.originalname}`);
     },
 });
 
