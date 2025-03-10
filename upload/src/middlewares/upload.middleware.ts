@@ -84,6 +84,23 @@ const updateVideoFilename = async (
     }
 };
 
+const handleUploadError = (err: any, res: Response): Response => {
+    console.error('Upload error: ', err);
+
+    if (err instanceof multer.MulterError) {
+        if (err.code === 'LIMIT_FILE_SIZE') {
+            return res
+                .status(httpStatus.REQUEST_TOO_LONG)
+                .json({ error: 'File size exceeds limit' });
+        }
+        return res.status(httpStatus.BAD_REQUEST).json({ error: err.message });
+    }
+
+    return res
+        .status(httpStatus.INTERNAL_SERVER_ERROR)
+        .json({ error: 'Upload failed' });
+};
+
 export const uploadVideoMiddleware = async (
     req: Request,
     res: Response,
@@ -106,24 +123,8 @@ export const uploadVideoMiddleware = async (
     }
 
     upload.single('video')(req, res, async (err) => {
-        if (err instanceof multer.MulterError) {
-            console.error('uploadVideoMiddleware error:', err);
-
-            if (err.code === 'LIMIT_FILE_SIZE') {
-                return res.status(httpStatus.REQUEST_TOO_LONG).json({
-                    error: 'File size excess limit (100MB)',
-                });
-            }
-
-            return res
-                .status(httpStatus.BAD_REQUEST)
-                .json({ error: err.message });
-        } else if (err) {
-            console.error('uploadVideoMiddleware error:', err);
-
-            return res
-                .status(httpStatus.BAD_REQUEST)
-                .json({ error: err.message });
+        if (err) {
+            return handleUploadError(err, res);
         }
 
         if (!req.file) {
