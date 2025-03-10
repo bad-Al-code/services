@@ -4,6 +4,7 @@ import {
     varchar,
     mysqlEnum,
     timestamp,
+    int,
 } from 'drizzle-orm/mysql-core';
 
 export const videos = mysqlTable('videos', {
@@ -18,6 +19,7 @@ export const videos = mysqlTable('videos', {
         'failed',
         'deleted',
     ]).default('pending'),
+    progress: int('progress').default(0),
     createdAt: timestamp('created_at').defaultNow(),
     deletedAt: timestamp('deleted_at')
         .default(sql`null`)

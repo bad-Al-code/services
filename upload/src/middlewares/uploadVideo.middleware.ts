@@ -11,6 +11,7 @@ import { s3Client } from '../config/aws';
 import { envVariables } from '../config/env';
 import { videos } from '../db/schema';
 import { db } from '../db';
+import { startVideoProcessing } from '../utils/videoProcessingJob';
 
 const storage = multers3({
     s3: s3Client,
@@ -60,7 +61,8 @@ const insertPendingVideo = async (
             userId: userId,
             filename: 'pending',
             s3Url: '',
-            status: 'pending',
+            status: 'processing',
+            progress: 0,
         });
     } catch (dbError) {
         console.error('Database insertion error:', dbError);
@@ -112,6 +114,8 @@ export const uploadVideoMiddleware = async (
 
     try {
         await insertPendingVideo(videoId, userId);
+
+        startVideoProcessing(videoId);
 
         (req as any).videoId = videoId;
     } catch (dbError) {
