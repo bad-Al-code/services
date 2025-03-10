@@ -5,6 +5,7 @@ import morgan from 'morgan';
 
 import { envVariables } from './config/env';
 import { videoRouter } from './routes/video.route';
+import { getAllVideoRouter } from './routes/getAllVideo.route';
 
 export const createApp = () => {
     const app: Express = express();
@@ -24,6 +25,7 @@ export const createApp = () => {
     app.use(limiter);
 
     app.use(videoRouter);
+    app.use(getAllVideoRouter);
 
     return app;
 };

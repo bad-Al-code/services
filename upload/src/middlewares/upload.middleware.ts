@@ -141,6 +141,7 @@ export const uploadVideoMiddleware = async (
                 req.file.originalname,
             );
         } catch (updateError) {
+            console.error('Error updating video filename:', updateError);
             res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
                 error: 'Database update error',
             });
