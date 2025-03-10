@@ -4,8 +4,8 @@ import rateLimit from 'express-rate-limit';
 import morgan from 'morgan';
 
 import { envVariables } from './config/env';
-import { videoRouter } from './routes/video.route';
-import { getAllVideoRouter } from './routes/getAllVideo.route';
+import { videoRouter } from './routes/uploadVideo.route';
+import { getAllVideoRouter } from './routes/getUserVideo.route';
 import { getSingleVideoRouter } from './routes/getSingleVideo.route';
 import { deleteVideoRouter } from './routes/deleteVideo.route';
 

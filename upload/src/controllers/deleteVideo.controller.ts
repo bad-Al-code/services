@@ -5,9 +5,6 @@ import httpStatus from 'http-status-codes';
 
 import { db } from '../db';
 import { videos } from '../db/schema';
-import { s3Client } from '../config/aws';
-import { DeleteObjectCommand } from '@aws-sdk/client-s3';
-import { envVariables } from '../config/env';
 
 const VideoSchema = z.object({
     userId: z.string().uuid(),
@@ -31,25 +28,16 @@ export const deleteVideoController = async (req: Request, res: Response) => {
             return;
         }
 
-        const videoData = video[0];
-        const s3Key = videoData.s3Url.split('/').pop();
-
-        if (s3Key) {
-            await s3Client.send(
-                new DeleteObjectCommand({
-                    Bucket: envVariables.AWS_S3_BUCKET,
-                    Key: s3Key,
-                }),
-            );
-        }
-
-        await db.delete(videos).where(eq(videos.id, videoId));
+        await db
+            .update(videos)
+            .set({ status: 'deleted', deletedAt: new Date() })
+            .where(eq(videos.id, videoId));
 
         res.status(httpStatus.OK).json({
-            message: 'Video deleted successfully',
+            message: 'Video marked as deleted successfully',
         });
     } catch (error) {
-        console.error('Error dleeting object: ', error);
+        console.error('Error marking video as deleted: ', error);
         res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
             error: 'Failed to delete video',
         });

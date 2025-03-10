@@ -1,3 +1,4 @@
+import { sql } from 'drizzle-orm';
 import {
     mysqlTable,
     varchar,
@@ -15,6 +16,10 @@ export const videos = mysqlTable('videos', {
         'processing',
         'completed',
         'failed',
+        'deleted',
     ]).default('pending'),
     createdAt: timestamp('created_at').defaultNow(),
+    deletedAt: timestamp('deleted_at')
+        .default(sql`null`)
+        .$type<Date | null>(),
 });

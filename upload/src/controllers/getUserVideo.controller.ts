@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import httpStatus from 'http-status-codes';
-import { eq } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
 import { z } from 'zod';
 
 import { videos } from '../db/schema';
@@ -23,7 +23,9 @@ export const getUserVideoController = async (req: Request, res: Response) => {
         const userVideo = await db
             .select()
             .from(videos)
-            .where(eq(videos.userId, userId));
+            .where(
+                and(eq(videos.userId, userId), eq(videos.status, 'completed')),
+            );
 
         res.status(httpStatus.OK).json({
             message: 'Videos frtched successfully',

@@ -1,7 +1,7 @@
 import { Router } from 'express';
 
-import { uploadVideoMiddleware } from '../middlewares/upload.middleware';
-import { uploadVideoController } from '../controllers/upload.controller';
+import { uploadVideoMiddleware } from '../middlewares/uploadVideo.middleware';
+import { uploadVideoController } from '../controllers/uploadVideo.controller';
 
 const router = Router();
 router.get('/test', (req, res) => {

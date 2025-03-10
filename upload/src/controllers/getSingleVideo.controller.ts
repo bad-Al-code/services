@@ -19,7 +19,13 @@ export const getSingleVideoController = async (req: Request, res: Response) => {
         const video = await db
             .select()
             .from(videos)
-            .where(and(eq(videos.userId, userId), eq(videos.id, videoId)))
+            .where(
+                and(
+                    eq(videos.userId, userId),
+                    eq(videos.id, videoId),
+                    eq(videos.status, 'completed'),
+                ),
+            )
             .limit(1);
 
         if (video.length === 0) {
