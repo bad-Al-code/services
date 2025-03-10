@@ -4,6 +4,7 @@ import rateLimit from 'express-rate-limit';
 import morgan from 'morgan';
 
 import { envVariables } from './config/env';
+import { thumbnailRouter } from './routes/thumbnails.route';
 
 export const createApp = () => {
     const app: Express = express();
@@ -26,6 +27,8 @@ export const createApp = () => {
     app.get('/', (req, res) => {
         res.send('Thumbnail service');
     });
+
+    app.use('/api/thumbnails/', thumbnailRouter);
 
     return app;
 };
