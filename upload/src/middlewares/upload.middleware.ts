@@ -51,6 +51,39 @@ const upload = multer({
     limits,
 });
 
+const insertPendingVideo = async (
+    videoId: string,
+    userId: string,
+): Promise<void> => {
+    try {
+        await db.insert(videos).values({
+            id: videoId,
+            userId: userId,
+            filename: 'pending',
+            s3Url: '',
+            status: 'pending',
+        });
+    } catch (dbError) {
+        console.error('Database insertion error:', dbError);
+        throw dbError;
+    }
+};
+
+const updateVideoFilename = async (
+    videoId: string,
+    filename: string,
+): Promise<void> => {
+    try {
+        await db
+            .update(videos)
+            .set({ filename: filename })
+            .where(eq(videos.id, videoId));
+    } catch (updateError) {
+        console.error('Database update error:', updateError);
+        throw updateError;
+    }
+};
+
 export const uploadVideoMiddleware = async (
     req: Request,
     res: Response,
@@ -62,21 +95,13 @@ export const uploadVideoMiddleware = async (
     const userId = req.params.userId;
 
     try {
-        await db.insert(videos).values({
-            id: videoId,
-            userId: userId,
-            filename: 'pending',
-            s3Url: '',
-            status: 'pending',
-        });
+        await insertPendingVideo(videoId, userId);
 
         (req as any).videoId = videoId;
     } catch (dbError) {
-        console.error('Database insertion error:', dbError);
         res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
-            error: 'Database Error',
+            error: 'Database error',
         });
-
         return;
     }
 
@@ -111,15 +136,14 @@ export const uploadVideoMiddleware = async (
         console.log('uploadVideoMiddleware finished');
 
         try {
-            await db
-                .update(videos)
-                .set({ filename: req.file.originalname })
-                .where(eq(videos.id, (req as any).videoId));
+            await updateVideoFilename(
+                (req as any).videoId,
+                req.file.originalname,
+            );
         } catch (updateError) {
-            console.error('Database update error:', updateError);
-            return res
-                .status(httpStatus.INTERNAL_SERVER_ERROR)
-                .json({ error: 'Database update error' });
+            res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
+                error: 'Database update error',
+            });
         }
 
         next();
