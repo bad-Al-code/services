@@ -5,6 +5,7 @@ import multer from 'multer';
 import multers3 from 'multer-s3';
 import { NextFunction, Request, Response } from 'express';
 import httpStatus from 'http-status-codes';
+import { eq } from 'drizzle-orm';
 
 import { s3Client } from '../config/aws';
 import { envVariables } from '../config/env';
@@ -59,13 +60,12 @@ export const uploadVideoMiddleware = async (
 
     const videoId = randomUUID();
     const userId = req.params.userId;
-    const filename = (req.file?.originalname as string) || 'unknown';
 
     try {
         await db.insert(videos).values({
             id: videoId,
             userId: userId,
-            filename: filename,
+            filename: 'pending',
             s3Url: '',
             status: 'pending',
         });
@@ -109,6 +109,18 @@ export const uploadVideoMiddleware = async (
 
         (req as any).s3Url = (req.file as Express.MulterS3.File).location;
         console.log('uploadVideoMiddleware finished');
+
+        try {
+            await db
+                .update(videos)
+                .set({ filename: req.file.originalname })
+                .where(eq(videos.id, (req as any).videoId));
+        } catch (updateError) {
+            console.error('Database update error:', updateError);
+            return res
+                .status(httpStatus.INTERNAL_SERVER_ERROR)
+                .json({ error: 'Database update error' });
+        }
 
         next();
     });
