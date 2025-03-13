@@ -15,7 +15,6 @@
     "license": "ISC",
     "description": "",
     "devDependencies": {
-        "drizzle-kit": "^0.30.5",
         "prettier": "^3.5.3",
         "ts-node": "^10.9.2",
         "typescript": "^5.8.2"
@@ -27,8 +26,8 @@
         "@types/multer": "^1.4.12",
         "@types/multer-s3": "^3.0.3",
         "@types/node": "^22.13.10",
-        "aws-sdk": "^2.1692.0",
         "dotenv": "^16.4.7",
+        "drizzle-kit": "^0.30.5",
         "drizzle-orm": "^0.40.0",
         "express-rate-limit": "^7.5.0",
         "helmet": "^8.0.0",

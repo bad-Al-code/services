@@ -9,4 +9,4 @@ WORKDIR /app
 COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /app . 
 
-CMD ["npm", "start"]
+CMD ["sh", "-c", "npm run db:push && npm start"]
