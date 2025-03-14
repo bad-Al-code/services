@@ -1,0 +1,20 @@
+apiVersion: skaffold/v4beta12
+kind: Config
+manifests:
+  rawYaml:
+    - infra/k8s/*.yaml
+build:
+  local:
+    concurrency: 1
+    tryImportMissing: false
+    useDockerCLI: false
+    push: false
+  artifacts:
+    - image: badal1/meetnote-auth-service
+      context: auth-service
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "src/**/*.ts"
+            dest: .
