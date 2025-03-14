@@ -13,7 +13,7 @@
     "format": "prettier . --write",
     "lint": "eslint . --ext .ts,.tsx",
     "prepare": "npm run build",
-    "release": "npm run format && npm run lint && npm run build && git add . && git commit -m \"${npm_config_message:-chore: release new version}\" && git push && npm publish --access public"
+    "release": "npm run format && npm run lint && npm run build && git add . && git commit -m \"${npm_config_message:-chore: release new version}\" && git push &&  npm version patch && npm publish --access public"
   },
   "keywords": [
     "error handling",
