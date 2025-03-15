@@ -1,23 +1,13 @@
 {
   "compilerOptions": {
-    "target": "ES2022",
-    "lib": ["ES2020", "DOM"],
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
+    "target": "ES6",
+    "module": "CommonJS",
+    "outDir": "dist",
     "strict": true,
-    "noImplicitAny": true,
-    "strictNullChecks": true,
-    "strictBindCallApply": true,
-    "noImplicitThis": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "sourceMap": true,
-    "outDir": "./dist"
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
   },
-  "include": ["src/**/*"],
+  "include": ["src"],
   "exclude": ["node_modules"]
 }
