@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-        "start": "ts-node-dev --respawn --poll --inspect --exit-child src/index.ts",
+    "start": "ts-node-dev --respawn --poll --inspect --exit-child src/index.ts",
     "build": "tsc",
     "lint": "eslint src/**/*.ts",
     "lint:fix": "eslint --fix src/**/*.ts",
@@ -25,8 +25,10 @@
     "typescript": "^5.8.2"
   },
   "dependencies": {
+    "@types/express": "^5.0.0",
     "dotenv": "^16.4.7",
     "drizzle-orm": "^0.40.0",
+    "express": "^4.21.2",
     "ioredis": "^5.6.0",
     "mysql2": "^3.13.0",
     "ts-node-dev": "^2.0.0",
