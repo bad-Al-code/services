@@ -1,6 +1,6 @@
 {
   "name": "@badalcodeorg/meetnote-common",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Reusable common pacakges",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
