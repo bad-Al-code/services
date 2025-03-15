@@ -12,6 +12,21 @@ spec:
       labels:
         app: auth
     spec:
+      initContainers:
+        - name: db-migration
+          image: badal1/meetnote-auth-service
+          command: ["sh", "-c", "npm run db:generate && npm run db:migrate"]
+          env:
+            - name: MYSQL_HOST
+              value: "mysql-service"
+            - name: MYSQL_PORT
+              value: "3306"
+            - name: MYSQL_USER
+              value: "root"
+            - name: MYSQL_PASSWORD
+              value: "root"
+            - name: MYSQL_DATABASE
+              value: "meetnote-auth-service"
       containers:
         - name: auth
           image: badal1/meetnote-auth-service

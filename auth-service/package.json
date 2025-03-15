@@ -7,7 +7,10 @@
     "build": "tsc",
     "lint": "eslint src/**/*.ts",
     "lint:fix": "eslint --fix src/**/*.ts",
-    "format": "prettier --write src/**/*.ts"
+    "format": "prettier --write src/**/*.ts",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:studio": "drizzle-kit studio"
   },
   "keywords": [],
   "author": "",
@@ -16,7 +19,6 @@
   "devDependencies": {
     "@types/node": "^22.13.10",
     "@typescript-eslint/eslint-plugin": "^8.26.1",
-    "drizzle-kit": "^0.30.5",
     "eslint": "^9.22.0",
     "eslint-config-prettier": "^10.1.1",
     "eslint-plugin-prettier": "^5.2.3",
@@ -27,6 +29,7 @@
   "dependencies": {
     "@types/express": "^5.0.0",
     "dotenv": "^16.4.7",
+    "drizzle-kit": "^0.30.5",
     "drizzle-orm": "^0.40.0",
     "express": "^4.21.2",
     "ioredis": "^5.6.0",
