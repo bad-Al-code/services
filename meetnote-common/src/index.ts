@@ -5,3 +5,5 @@ export * from './errors/authentication-error';
 export * from './errors/authorization-error';
 export * from './errors/bad-request-error';
 export * from './logger/logger';
+
+export * from './middlewares/validate-request';
