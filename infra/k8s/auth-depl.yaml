@@ -13,6 +13,15 @@ spec:
         app: auth
     spec:
       initContainers:
+        - name: wait-for-mysql
+          image: busybox:1.37-uclibc
+          command:
+            [
+              "sh",
+              "-c",
+              "until nc -z mysql-service 3306; do echo waiting for MySQL; sleep 2; done",
+            ]
+
         - name: db-migration
           image: badal1/meetnote-auth-service
           command: ["sh", "-c", "npm run db:generate && npm run db:migrate"]
@@ -27,6 +36,10 @@ spec:
               value: "root"
             - name: MYSQL_DATABASE
               value: "meetnote-auth-service"
+            - name: REDIS_HOST
+              value: redis-service
+            - name: REDIS_PORT
+              value: "6379"
       containers:
         - name: auth
           image: badal1/meetnote-auth-service
