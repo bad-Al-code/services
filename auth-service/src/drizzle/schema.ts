@@ -10,8 +10,9 @@ export const UserTable = mysqlTable('users', {
     .primaryKey()
     .default(sql`(UUID())`),
 
-  name: text().notNull(),
-  email: text().notNull().unique(),
+  name: varchar('name', { length: 255 }).notNull(),
+  email: varchar('email', { length: 255 }).notNull().unique(),
+  test: varchar('test', { length: 32 }),
   password: text(),
   salt: text(),
   role: userRoleEnum.notNull().default('user'),
