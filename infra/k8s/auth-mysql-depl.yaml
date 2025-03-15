@@ -22,6 +22,24 @@ spec:
               value: "meetnote-auth-service"
           ports:
             - containerPort: 3306
+          livenessProbe:
+            exec:
+              command:
+                - mysqladmin
+                - ping
+                - "-h"
+                - "localhost"
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            exec:
+              command:
+                - mysqladmin
+                - ping
+                - "-h"
+                - "localhost"
+            initialDelaySeconds: 10
+            periodSeconds: 5
           volumeMounts:
             - name: mysql-data
               mountPath: /var/lib/mysql
